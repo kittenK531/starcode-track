@@ -1,26 +1,33 @@
 body {
-  padding-top: 90px;
-  padding-bottom: 30px;
+    padding-top: 90px;
+    padding-bottom: 30px;
 }
 
 .theme-dropdown .dropdown-menu {
-  display: block;
-  position: static;
-  margin-bottom: 20px;
+    display: block;
+    position: static;
+    margin-bottom: 20px;
 }
 
-.theme-showcase > p > .btn {
-  margin: 5px 0;
+.theme-showcase>p>.btn {
+    margin: 5px 0;
 }
 
 .top7 {
-	margin-top: 7px;
+    margin-top: 7px;
 }
 
 .top15 {
-	margin-top: 15px;
+    margin-top: 15px;
 }
 
-a, a:hover, a:visited {
-	color: black;
+a,
+a:hover,
+a:visited {
+    color: black;
+}
+
+img {
+    max-width: 100%;
+    max-height: 100%;
 }
