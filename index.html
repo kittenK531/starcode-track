@@ -119,6 +119,25 @@
 
             <h5> 2.1 Making use of
                 <code>swifter_tu4</code></h5>
+            <p>After successful compilation, there are a few notes worth mentioning for the investigation in swifter.</p>
+            <h5>2.1.a Input files</h5>
+            <p>There are 3 input files.
+                <ul>
+                    <li>param.in: This file specifies the location of pl.in and tp.in also the simulation tuning parameters.</li>
+                    <li>pl.in: This file contains information of multiple planets.</li>
+                    <li>tp.in: This file contains information for particles (massless).</li>
+                </ul>
+                In order to have a clean working directory, the current setup ontsunami provided by berkeley ocf has an isolated directory named TEST. Under TEST directory, there are the following files. There are 1 planet output files for particle tracing, with other
+                side inputs and dump files of
+                <a href="docs/bin.dat"><code>bin.dat</code></a>,
+                <a href="docs/discard.out"><code>discard.out</code>
+                </a>,
+                <a href="docs/dump_pl1.bin"><code>dump_pl1.bin</code></a>,
+                <a href="docs/follow.out"><code>follow.out</code></a>,
+                <a href="docs/param_test.in"><code>param_test.in</code></a>,
+                <a href="docs/pl_test.in"><code>pl_test.in</code></a>
+                <a href="docs/tp_test.in"><code>tp_test.in</code></a>. The sample files for single orbiting problem can be found in the links above.
+
     </div>
     </body>
 
