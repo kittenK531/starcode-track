@@ -43,26 +43,82 @@
 
         <body>
 
-            <h1 align="center">Multiple scattering Dark Matter capture simulation by Monte Carlo development notes</h1>
+            <h1 align="center">documentation capture from multiple-scattering using Monte Carlo method</h1>
 
-            <p>This site documents detailed development of the Monte Carlo simulation code to generating dark matter particle capture of astrophysical objects, for now, the sun.</p>
+            <p>This is the documentation and development progress checking forthe current Python code for the simulation of dark matter scattering of dark matter capture of astrophysical objects using the Monte Carlo method.
+            </p>
 
-            <h2 align="center">Keplers Orbit</h2>
+            <h2 align="center" style="font-size:x-large;"><b>1. KEPLERIAN ORBITS</b> </h2>
 
-            <h3 align="center">Simulation methods</h3>
-            <h4 align="left">Just Python</h4>
-            <p>The current plots generated using integrator of verlet method is concluded that the keplers orbit (initial condition dependent), appears to not be energy conserved.</p>
-            <img src="images/convergence.png" , width="">
+            <h3 align="center">A. Simulation methods</h3>
+            <p></p>
+            <p><b>Plans</b>: There are two calculation algorithms currentlyin comparison: Python self-writting verlet and fortran binary of the swifter package.</p>
+            <p>
+
+                <b>Concerns</b>: Writing the simulation code using Python3 provides us with the benefit of language compatibility to many of the modern libraries. It is however an interpreter language itself which truncates time consumption. It is thus
+                our ultimate goal to produce simulation results with a reasonably fast code together with calculations with precise and accurate result to display the dark matter scattering process.</p>
+            <h4 align="center" style="font-style: italic;">1. Python 3: Numerical integration</h4>
+            <h5>1.1 Verlet method</h5>
+            <p>The algorithm of verlet is fairly simple. By knowing the initial position and velocity, in our 3D simulation, the following steps for numerical integration is implemented.</p>
+            <p>$$r[i + 1] = r[i] + v[i] \times h + 0.5 \times a[i] \times \frac{h^2}{2}$$ $$v[i + 1] = v[i] + a[i] \times \frac{h}{2}$$ $$a[i + 1] = g(M, r[i + 1], r_*)$$ $$v[i + 1] = v[i + 1] + a[i + 1] \times \frac{h}{2}$$
+            </p>
+
+            <h5>1.2 Results</h5>
+            <p>With the variation of initial velocity, which fundamentally affects the trajectory, with the initial position at \(\mathbf{r} = (x,y,z) = (1, 0, 0)\) and \(\mathbf{v} = (0, \alpha \times 2\pi, 0)\). Note that here we uses the unit set of AU
+                for length, Solar Mass for mass, and year for time. And \(\alpha\) is the tuning parameters for sanity checking for elliptical orbits.</p>
+            <p align="center ">
+                <table align="center ">
+                    <tr>
+                        <td align="center">
+                            <a href="result-1.gif">
+                                <img src="images/11629.gif" width="60%"></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center ">
+                            <a href="result-2.gif">
+                                <img src="images/11648.gif" width="80%"></a>
+                        </td>
+                    </tr>
+                    <td>
+                        <b>Figure 1.2 </b>These plots are the 2D (up) and 3D (down) plots of dark matter particle orbit about sun at the origin under solely the influence of gravitational attraction.
+                    </td>
+                    </tr>
+                </table>
+            </p>
+            <p>It can be seen that by tuning the parameter \(\alpha\), the shape of orbit changes drastically but still remain planar.</p>
+
+            <p>For documentation purposes, the stepsize \(h=0.00005\) the time taken to generate 100 cycle takes local machine CPU time is 1m28.449s. This serves as a reference comparison runtime.</p>
+
+            <h5>1.3 Convergence test</h5>
+            <p>The current plots generated using integrator of verlet method is concluded that the keplers orbit (initial condition dependent), appears to not be energy conserved, with certain choice of stepsize.</p>
+            <p align="center ">
+                <table align="center ">
+                    <tr>
+                        <td align="center ">
+                            <a href="convergence.png ">
+                                <img src="images/convergence.png " width="90% "></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Figure 1.1 </b> Convergence test for kepler's orbit plotting in evaluating energy loss qualitatively.
+                        </td>
+                    </tr>
+                </table>
+            </p>
             <p>It is then motivated to make use of the package swifter with
-                <a href="https://www.boulder.swri.edu/swifter/">
+                <a href="https://www.boulder.swri.edu/swifter/ ">
             sympletic integrators for celestial mechanics.</a>
             </p>
 
-            <h4>Fortran wrapper for integrator application</h4>
+            <h4 align="center " style="font-style: italic; ">2. Fortran wrapper for integrator application</h4>
             <p>It is, after multiple hours of compiling and debugging, realized that the compilation of swifter is highly dependent on the OS <code>-lSystem</code> always fails to compile on MacOS.</p>
 
             <p>Successful compilation of Swifter allows us to move our execution of integration from python to fortran developed codes.</p>
 
+            <h5> 2.1 Making use of
+                <code>swifter_tu4</code></h5>
     </div>
     </body>
 
