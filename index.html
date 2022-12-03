@@ -43,106 +43,134 @@
 
         <body>
 
-            <h1 align="center">documentation capture from multiple-scattering using Monte Carlo method</h1>
+            <h1 align="center">Multiscatter dark matter capture of our Sun</h1>
 
-            <p>This is the documentation and development progress checking forthe current Python code for the simulation of dark matter scattering of dark matter capture of astrophysical objects using the Monte Carlo method.
+            <p>Our Sun is one of the most resourceful candidates for providing evidence to direct scattering and accumulation of galactic dark matter. In this work, we explore the scattering between incoming galactic dark matter in both theoretical and computational
+                approaches. We focus on the regime of DM particles scatter through the stellar particle medium. We also investigate heavy dark matter in particular, simulating the dark matter capture process using Monte-Carlo simulations with adaptations
+                of FORTRAN package swifter to Python.
+            </p>
+            <p><b>Source code: </b>
+                <a href="https://github.com/kittenK531/starcode.git">https://github.com/kittenK531/starcode.git</a>
             </p>
 
-            <h2 align="center" style="font-size:x-large;"><b>1. KEPLERIAN ORBITS</b> </h2>
+            <h2 align="center" style="font-size:x-large;"><b>Introduction</b> </h2>
+            <p>A usual approach to investigating known interactions between particles is by learning about the Lagrangian of the field and interactions. It remains an open ques- tion to particle physicists about where the well-developed boundaries lie upon
+                all proposed models of dark matter. Understanding the particle nature opens up a new sector for Beyond Standard Model physics.</p>
 
-            <h3 align="center">A. Simulation methods</h3>
-            <p></p>
-            <p><b>Plans</b>: There are two calculation algorithms currentlyin comparison: Python self-writting verlet and fortran binary of the swifter package.</p>
-            <p>
+            <p>The first results of the direct detection of dark matter from LUX-ZEPLIN (LZ) have just been released. Physicists have been putting a tremendous amount of effort into finding significant observable signatures for the detection of dark matter
+                of specific predicted interactions from the Earth. Efforts in finding dark matter also by collider production is also another direct detection method in recent years. It is, however, unfortunate that the terrestrial environment does not
+                have a rich population of dark matter compared to galactic objects with long durations to have accumulated dark matter.</p>
 
-                <b>Concerns</b>: Writing the simulation code using Python3 provides us with the benefit of language compatibility to many of the modern libraries. It is however an interpreter language itself which truncates time consumption. It is thus
-                our ultimate goal to produce simulation results with a reasonably fast code together with calculations with precise and accurate result to display the dark matter scattering process.</p>
-            <h4 align="center" style="font-style: italic;">1. Python 3: Numerical integration</h4>
-            <h5>1.1 Verlet method</h5>
-            <p>The algorithm of verlet is fairly simple. By knowing the initial position and velocity, in our 3D simulation, the following steps for numerical integration is implemented.</p>
-            <p>$$r[i + 1] = r[i] + v[i] \times h + 0.5 \times a[i] \times \frac{h^2}{2}$$ $$v[i + 1] = v[i] + a[i] \times \frac{h}{2}$$ $$a[i + 1] = g(M, r[i + 1], r_*)$$ $$v[i + 1] = v[i + 1] + a[i + 1] \times \frac{h}{2}$$
-            </p>
+            <p>The most abundant population of dark matter is the large-scale gravitational structures accessed by astrophysical and cosmological observations. Where gravitational interactions in space provide us with a large sample of evidence to catch,
+                and the limits only live within precision controls in the laboratories.</p>
 
-            <h5>1.2 Results</h5>
-            <p>With the variation of initial velocity, which fundamentally affects the trajectory, with the initial position at \(\mathbf{r} = (x,y,z) = (1, 0, 0)\) and \(\mathbf{v} = (0, \alpha \times 2\pi, 0)\). Note that here we uses the unit set of AU
-                for length, Solar Mass for mass, and year for time. And \(\alpha\) is the tuning parameters for sanity checking for elliptical orbits.</p>
-            <p align="center ">
-                <table align="center ">
-                    <tr>
-                        <td align="center">
-                            <a href="result-1.gif">
-                                <img src="images/11629.gif" width="60%"></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="center ">
-                            <a href="result-2.gif">
-                                <img src="images/11648.gif" width="80%"></a>
-                        </td>
-                    </tr>
-                    <td>
-                        <b>Figure 1.2 </b>These plots are the 2D (up) and 3D (down) plots of dark matter particle orbit about sun at the origin under solely the influence of gravitational attraction.
-                    </td>
-                    </tr>
-                </table>
-            </p>
-            <p>It can be seen that by tuning the parameter \(\alpha\), the shape of orbit changes drastically but still remain planar.</p>
+            <p>It is thus encouraging for physicists to probe the stellar environment for closer and larger stellar objects, which has been existing for billions of years and allow an abundant amount of dark matter to be captured and thermalized. Looking
+                at closer stars lowers the bar to looking into signature observations when it comes to highly sensitive measurements, and removes the need to denoising the statistical background for observing far-away stars.</p>
 
-            <p>For documentation purposes, the stepsize \(h=0.00005\) the time taken to generate 100 cycle takes local machine CPU time is 1m28.449s. This serves as a reference comparison runtime.</p>
+            <p>Without a fair estimation of dark matter profile in stars, it is rather hard to predict results from theoretical models, and the constraints on the detections cannot be anchored with confidence. But knowing how long the stars have been around
+                helps physicists to make estimations for the amount of dark matter being trapped in the star, which also means it has accumulated a certain amount of dark matter to interact and be observed.</p>
 
-            <h5>1.3 Convergence test</h5>
-            <p>The current plots generated using integrator of verlet method is concluded that the keplers orbit (initial condition dependent), appears to not be energy conserved, with certain choice of stepsize.</p>
-            <p align="center ">
-                <table align="center ">
-                    <tr>
-                        <td align="center ">
-                            <a href="convergence.png ">
-                                <img src="images/convergence.png " width="90% "></a>
-                        </td>
-                    </tr>
-                    <tr>
+            <p>Many theoretical works of different proposed models have done estimations for respective capture rates, however, since there are no direct and certain conclusions from detections that can confirm the interaction between dark matter and other
+                fields, it appears that the reality is more complex than the expectations of theoretical works. So our approach to starting to investigate dark matter capture is by simulating dark matter scatters trajectories with the limited interactions
+                we can confirm, gravitational attraction.</p>
+
+
+            <h2 align="center" style="font-size:x-large;"><b>Keplerian orbit simulations</b> </h2>
+            <p <h3 align="center">A. Methods</h3>
+                <p></p>
+                <p><b>Plans</b>: There are two calculation algorithms currentlyin comparison: Python self-writting verlet and fortran binary of the swifter package.</p>
+                <p>
+
+                    <b>Concerns</b>: Writing the simulation code using Python3 provides us with the benefit of language compatibility to many of the modern libraries. It is however an interpreter language itself which truncates time consumption. It is
+                    thus our ultimate goal to produce simulation results with a reasonably fast code together with calculations with precise and accurate result to display the dark matter scattering process.</p>
+                <h4 align="center" style="font-style: italic;">1. Python 3: Numerical integration</h4>
+                <h5>1.1 Verlet method</h5>
+                <p>The algorithm of verlet is fairly simple. By knowing the initial position and velocity, in our 3D simulation, the following steps for numerical integration is implemented.</p>
+                <p>$$r[i + 1] = r[i] + v[i] \times h + 0.5 \times a[i] \times \frac{h^2}{2}$$ $$v[i + 1] = v[i] + a[i] \times \frac{h}{2}$$ $$a[i + 1] = g(M, r[i + 1], r_*)$$ $$v[i + 1] = v[i + 1] + a[i + 1] \times \frac{h}{2}$$
+                </p>
+
+                <h5>1.2 Results</h5>
+                <p>With the variation of initial velocity, which fundamentally affects the trajectory, with the initial position at \(\mathbf{r} = (x,y,z) = (1, 0, 0)\) and \(\mathbf{v} = (0, \alpha \times 2\pi, 0)\). Note that here we uses the unit set
+                    of AU for length, Solar Mass for mass, and year for time. And \(\alpha\) is the tuning parameters for sanity checking for elliptical orbits.</p>
+                <p align="center ">
+                    <table align="center ">
+                        <tr>
+                            <td align="center">
+                                <a href="result-1.gif">
+                                    <img src="images/11629.gif" width="60%"></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center ">
+                                <a href="result-2.gif">
+                                    <img src="images/11648.gif" width="80%"></a>
+                            </td>
+                        </tr>
                         <td>
-                            <b>Figure 1.1 </b> Convergence test for kepler's orbit plotting in evaluating energy loss qualitatively.
+                            <b>Figure 1.2 </b>These plots are the 2D (up) and 3D (down) plots of dark matter particle orbit about sun at the origin under solely the influence of gravitational attraction.
                         </td>
-                    </tr>
-                </table>
-            </p>
-            <p>It is then motivated to make use of the package swifter with
-                <a href="https://www.boulder.swri.edu/swifter/ ">
+                        </tr>
+                    </table>
+                </p>
+                <p>It can be seen that by tuning the parameter \(\alpha\), the shape of orbit changes drastically but still remain planar.</p>
+
+                <p>For documentation purposes, the stepsize \(h=0.00005\) the time taken to generate 100 cycle takes local machine CPU time is 1m28.449s. This serves as a reference comparison runtime.</p>
+
+                <h5>1.3 Convergence test</h5>
+                <p>The current plots generated using integrator of verlet method is concluded that the keplers orbit (initial condition dependent), appears to not be energy conserved, with certain choice of stepsize.</p>
+                <p align="center ">
+                    <table align="center ">
+                        <tr>
+                            <td align="center ">
+                                <a href="convergence.png ">
+                                    <img src="images/convergence.png " width="90% "></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Figure 1.1 </b> Convergence test for kepler's orbit plotting in evaluating energy loss qualitatively.
+                            </td>
+                        </tr>
+                    </table>
+                </p>
+                <p>It is then motivated to make use of the package swifter with
+                    <a href="https://www.boulder.swri.edu/swifter/ ">
             sympletic integrators for celestial mechanics.</a>
-            </p>
+                </p>
 
-            <h4 align="center " style="font-style: italic; ">2. Fortran wrapper for integrator application</h4>
-            <p>It is, after multiple hours of compiling and debugging, realized that the compilation of swifter is highly dependent on the OS <code>-lSystem</code> always fails to compile on MacOS.</p>
+                <h4 align="center " style="font-style: italic; ">2. Fortran wrapper for integrator application</h4>
+                <p>It is, after multiple hours of compiling and debugging, realized that the compilation of swifter is highly dependent on the OS <code>-lSystem</code> always fails to compile on MacOS.</p>
 
-            <p>Successful compilation of Swifter allows us to move our execution of integration from python to fortran developed codes.</p>
+                <p>Successful compilation of Swifter allows us to move our execution of integration from python to fortran developed codes.</p>
 
-            <h5> 2.1 Making use of
-                <code>swifter_tu4</code></h5>
-            <p>After successful compilation, there are a few notes worth mentioning for the investigation in swifter.</p>
-            <h5>2.1.a Input files</h5>
-            <p>There are 3 input files.
-                <ul>
-                    <li>param.in: This file specifies the location of pl.in and tp.in also the simulation tuning parameters.</li>
-                    <li>pl.in: This file contains information of multiple planets.</li>
-                    <li>tp.in: This file contains information for particles (massless).</li>
-                </ul>
-                In order to have a clean working directory, the current setup ontsunami provided by berkeley ocf has an isolated directory named TEST. Under TEST directory, there are the following files. There are 1 planet output files for particle tracing, with other
-                side inputs and dump files of
-                <a href="docs/bin.dat"><code>bin.dat</code></a>,
-                <a href="docs/discard.out"><code>discard.out</code>
+                <h5> 2.1 Making use of
+                    <code>swifter_tu4</code></h5>
+                <p>After successful compilation, there are a few notes worth mentioning for the investigation in swifter.</p>
+                <h5>2.1.a Input files</h5>
+                <p>There are 3 input files.
+                    <ul>
+                        <li>param.in: This file specifies the location of pl.in and tp.in also the simulation tuning parameters.</li>
+                        <li>pl.in: This file contains information of multiple planets.</li>
+                        <li>tp.in: This file contains information for particles (massless).</li>
+                    </ul>
+                    In order to have a clean working directory, the current setup ontsunami provided by berkeley ocf has an isolated directory named TEST. Under TEST directory, there are the following files. There are 1 planet output files for particle tracing, with other
+                    side inputs and dump files of
+                    <a href="docs/bin.dat"><code>bin.dat</code></a>,
+                    <a href="docs/discard.out"><code>discard.out</code>
                 </a>,
-                <a href="docs/dump_pl1.bin"><code>dump_pl1.bin</code></a>,
-                <a href="docs/follow.out"><code>follow.out</code></a>,
-                <a href="docs/param_test.in"><code>param_test.in</code></a>,
-                <a href="docs/pl_test.in"><code>pl_test.in</code></a>
-                <a href="docs/tp_test.in"><code>tp_test.in</code></a>. The sample files for single orbiting problem can be found in the links above.
+                    <a href="docs/dump_pl1.bin"><code>dump_pl1.bin</code></a>,
+                    <a href="docs/follow.out"><code>follow.out</code></a>,
+                    <a href="docs/param_test.in"><code>param_test.in</code></a>,
+                    <a href="docs/pl_test.in"><code>pl_test.in</code></a>
+                    <a href="docs/tp_test.in"><code>tp_test.in</code></a>. The sample files for single orbiting problem can be found in the links above.
 
-                <p>I will update the relative files, but the updated and modified swifter can be found in the private repo.</p>
+                    <p>I will update the relative files, but the updated and modified swifter can be found in the private repo.</p>
 
-                <p>I have looked into the runtime of the python code and FORTRAN code for comparisons. It takes about 0m2.378s for python and 3m33.699s to finish simulation of 1 year for circulation around the sun with step size of 0.0005 * 1yr.</p>
+                    <p>I have looked into the runtime of the python code and FORTRAN code for comparisons. It takes about 0m2.378s for python and 3m33.699s to finish simulation of 1 year for circulation around the sun with step size of 0.0005 * 1yr.</p>
 
     </div>
     </body>
+
+</html>
 
 </html>
